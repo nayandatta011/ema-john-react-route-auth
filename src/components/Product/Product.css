@@ -1,0 +1,23 @@
+.product-dis-container{
+    display: flex;
+    /* justify-content: space-between; */
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0;
+}
+.product-img-div{
+    margin-right: 40px;
+}
+.btn-cart{
+    background-color: #f0c14b;
+    padding: 5px 20px;
+    border-radius: 2px;
+    border: 1px solid rgb(95, 93, 93);
+    cursor: pointer;
+}
+.btn-cart:hover{
+    background-color: #e0af32;
+}
+h4{
+    color: blue;
+    font-weight: 500;
+}
