@@ -31,6 +31,22 @@ function getStoredCart() {
     return exists ? JSON.parse(exists) : {};
 }
 
+function removeCart() {
+    const exists = doExists();
+    if (exists) {
+        localStorage.removeItem('shopping_cart');
+    }
+}
+
+function removeFromDB(key) {
+    const exists = doExists();
+    if (exists) {
+        const shoppingCart = JSON.parse(exists);
+        delete shoppingCart[key];
+        updateData(shoppingCart);
+    }
+}
 
 
-export { getData, getStoredCart }
+
+export { getData, getStoredCart, removeCart, updateData, removeFromDB }
