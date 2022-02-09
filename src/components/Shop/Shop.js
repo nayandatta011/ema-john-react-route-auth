@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getData, getStoredCart } from '../../db';
+import { getData } from '../../db';
 import useCart from '../../hooks/useCart';
-import useProducts from '../../hooks/useProducts';
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
 
 const Shop = () => {
-    const [products, setProducts] = useProducts();
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useCart(products);
-    // const [matchedProducts, setMatchedProducts] = useState([]);
+    const [matchedProducts, setMatchedProducts] = useState([]);
     // console.log(products);
+
+
+    useEffect(() => {
+        fetch('./products.json')
+            .then(res => res.json())
+            .then(data => {
+                setProducts(data);
+                setMatchedProducts(data);
+            })
+    }, []);
 
     // Listener for Add to cart 
     const handleAddToCart = (product) => {
@@ -20,7 +29,7 @@ const Shop = () => {
         if (exists) {
             const restProducts = cart.filter(pd => pd.key !== product.key);
             exists.quantity += 1;
-            cartNew = [...restProducts, product];
+            cartNew = [...restProducts, exists];
         } else {
             product.quantity = 1;
             cartNew = [...cart, product];
@@ -33,12 +42,12 @@ const Shop = () => {
 
 
     const handleSearch = event => {
-        // console.log(event.target.value);
-        // const searchText = event.target.value;
-        // const matchedProduct = products.filter(product => product.name.toLowerCase().includes(searchText.toLowerCase()));
-        // console.log(matchedProduct);
+        console.log(event.target.value);
+        const searchText = event.target.value;
+        const matchedProduct = products.filter(product => product.name.toLowerCase().includes(searchText.toLowerCase()));
+        console.log(matchedProduct);
 
-        // setMatchedProducts(matchedProduct);
+        setMatchedProducts(matchedProduct);
     }
 
 
@@ -51,7 +60,7 @@ const Shop = () => {
             <div className='shop-container'>
                 <div className="product-container">
                     {
-                        products.map(product => <Product
+                        matchedProducts.map(product => <Product
                             key={product.key}
                             handleAddToCart={handleAddToCart}
                             product={product}></Product>)
